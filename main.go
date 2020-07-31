@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/RainerGevers/tasker/config"
 	"github.com/RainerGevers/tasker/db"
+	"github.com/RainerGevers/tasker/lib"
 	"github.com/RainerGevers/tasker/models"
 	"github.com/gorilla/mux"
 	"log"
@@ -17,8 +19,8 @@ func main() {
 	}
 	database.AutoMigrate(&models.Migration{})
 	db.RunMigrations(database)
-	r := mux.NewRouter()
-	r.HandleFunc("/", TestRoute)
+	env := config.Env{Database: database}
+	r := lib.AddRoutes(mux.NewRouter(), &env)
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
 
