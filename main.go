@@ -6,9 +6,16 @@ import (
 	"github.com/RainerGevers/tasker/lib"
 	"github.com/RainerGevers/tasker/models"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 )
+
+func init(){
+	err := godotenv.Load()
+	if err != nil {
+	}
+}
 
 func main() {
 	log.Println("Starting Up")
@@ -21,9 +28,5 @@ func main() {
 	db.RunMigrations(database)
 	env := config.Env{Database: database}
 	r := lib.AddRoutes(mux.NewRouter(), &env)
-	log.Fatal(http.ListenAndServe(":8000", r))
-}
-
-func TestRoute(w http.ResponseWriter, _r *http.Request) {
-	w.Write([]byte("Hello WORLD!!!\n"))
+	log.Fatal(http.ListenAndServe("127.0.0.1:4500", r))
 }
