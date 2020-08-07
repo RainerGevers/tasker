@@ -2,15 +2,17 @@ package config
 
 import (
 	"gorm.io/gorm"
+	"log"
 	"net/http"
 )
 
 type Env struct {
 	Database *gorm.DB
+	Logger *log.Logger
 }
 
 type AppHandler struct {
-	Env *Env
+	Env     *Env
 	Handler func(env *Env, w http.ResponseWriter, r *http.Request)
 }
 

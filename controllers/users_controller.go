@@ -18,12 +18,12 @@ type user struct {
 type userParams struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Email string `json:"email"`
+	Email    string `json:"email"`
 }
 
 type error struct {
 	Reference string `json:"reference"`
-	Message string `json:"message"`
+	Message   string `json:"message"`
 }
 
 func UsersRegister(env *config.Env, w http.ResponseWriter, r *http.Request) {
@@ -80,5 +80,3 @@ func UsersRegister(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(201)
 	w.Write(response)
 }
-
-

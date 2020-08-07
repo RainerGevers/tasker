@@ -8,10 +8,17 @@ import (
 
 func AddRoutes(r *mux.Router, env *config.Env) *mux.Router {
 
-	users := r.PathPrefix("/users").Subrouter()
+	/*#################  VERSION 1  #################*/
+
+	v1 := r.PathPrefix("/v1").Subrouter()
+
+	maintenance := v1.PathPrefix("/maintenance").Subrouter()
+	maintenance.HandleFunc("/alive", config.AppHandler{Env: env, Handler: controllers.AliveCheck}.ServeHTTP).Methods("GET")
+
+	users := v1.PathPrefix("/users").Subrouter()
 	users.HandleFunc("/register", config.AppHandler{Env: env, Handler: controllers.UsersRegister}.ServeHTTP).Methods("POST")
+
+	/*######################################################################################################################################*/
 
 	return r
 }
-
-
