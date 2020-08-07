@@ -11,9 +11,9 @@ COPY . .
 
 RUN GOOS=linux GOARCH=amd64 go build -o ./build/tasker
 
-FROM ubuntu:18.04
+FROM alpine:latest
 
-RUN apt update && apt -y upgrade
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 COPY --from=builder /app/build/tasker tasker

@@ -82,7 +82,7 @@ func UsersRegister(env *config.Env, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userSerialized := serializers.UserSerializer{Id: user.ID, Username: user.Username, Email: user.Email}
+	userSerialized := serializers.UserSerializer{Id: user.ID, Username: user.Username, Email: user.Email, Uuid: user.Uuid}
 
 	response, _ := json.Marshal(userSerialized)
 
