@@ -17,6 +17,7 @@ func AddRoutes(r *mux.Router, env *config.Env) *mux.Router {
 
 	users := v1.PathPrefix("/users").Subrouter()
 	users.HandleFunc("/register", config.AppHandler{Env: env, Handler: controllers.UsersRegister}.ServeHTTP).Methods("POST")
+	users.HandleFunc("/login", config.AppHandler{Env: env, Handler: controllers.UserLogin}.ServeHTTP).Methods("POST")
 
 	/*######################################################################################################################################*/
 

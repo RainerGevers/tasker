@@ -5,3 +5,11 @@ type UserSerializer struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
 }
+
+type LoginSerializer struct {
+	Uuid string `json:"uuid"`
+	Email string `json:"email"`
+	Username string `json:"username"`
+	AuthToken string `json:"authToken"`
+	RefreshToken string `json:"refreshToken"`
+}

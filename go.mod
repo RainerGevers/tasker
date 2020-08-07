@@ -8,4 +8,6 @@ require (
 	gorm.io/driver/mysql v0.3.1
 	gorm.io/gorm v0.2.28
 	github.com/joho/godotenv v1.3.0
+	github.com/satori/go.uuid v1.2.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 )
