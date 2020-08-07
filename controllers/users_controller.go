@@ -165,7 +165,7 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	loginSerialized := serializers.LoginSerializer{Uuid: user.Uuid, Email: user.Email, Username: user.Username, AuthToken: t, RefreshToken: tr}
 
 	response, _ := json.Marshal(loginSerialized)
-	
+
 	w.WriteHeader(200)
 	w.Write(response)
 
