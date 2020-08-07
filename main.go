@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func init(){
+func init() {
 	err := godotenv.Load()
 	if err != nil {
 	}
@@ -26,7 +26,8 @@ func main() {
 	}
 	database.AutoMigrate(&models.Migration{})
 	db.RunMigrations(database)
-	env := config.Env{Database: database}
+	logger := config.InitLogger()
+	env := config.Env{Database: database, Logger: logger}
 	r := lib.AddRoutes(mux.NewRouter(), &env)
-	log.Fatal(http.ListenAndServe("127.0.0.1:4500", r))
+	log.Fatal(http.ListenAndServe("0.0.0.0:4500", r))
 }
