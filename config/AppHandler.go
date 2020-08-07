@@ -8,7 +8,7 @@ import (
 
 type Env struct {
 	Database *gorm.DB
-	Logger *log.Logger
+	Logger   *log.Logger
 }
 
 type AppHandler struct {

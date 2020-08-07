@@ -7,5 +7,5 @@ type User struct {
 	Email    string `gorm:"index:,unique"`
 	Password string
 	Username string `gorm:"index:,unique"`
-	Uuid	 string `gorm:"index:,unique"`
+	Uuid     string `gorm:"index:,unique"`
 }
