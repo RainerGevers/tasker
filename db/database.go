@@ -15,7 +15,7 @@ func NewConnection() (*gorm.DB, error) {
 	dbName := os.Getenv("MYSQL_DATABASE")
 	dsn := username + ":" + password + "@tcp(" + hostname + ":" + port + ")/" + dbName + "?charset=utf8mb4&parseTime=True"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Error),
 	})
 	if err != nil {
 		return nil, err
