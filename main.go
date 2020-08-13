@@ -29,5 +29,6 @@ func main() {
 	logger := config.InitLogger()
 	env := config.Env{Database: database, Logger: logger}
 	r := lib.AddRoutes(mux.NewRouter(), &env)
+	logger.Println("Running on port 4500")
 	log.Fatal(http.ListenAndServe("0.0.0.0:4500", r))
 }
