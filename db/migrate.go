@@ -15,6 +15,7 @@ func RunMigrations(db *gorm.DB) {
 		log.Fatal(dbVersions.Error)
 	}
 
+	// TODO: Pluck https://v2.gorm.io/docs/advanced_query.html
 	versionNumbers := []string{}
 	for _, version := range versions {
 		versionNumbers = append(versionNumbers, version.Version)
