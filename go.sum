@@ -28,3 +28,5 @@ gorm.io/gorm v0.2.25 h1:ESzqX6mEHClLI9FSj+U/QvEyzFoiDZt5P6C/hcI7Be8=
 gorm.io/gorm v0.2.25/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
 gorm.io/gorm v0.2.28 h1:/S7LExGP4cmuiYDLlaXXzRdBXnV6CQXFc4udJc6ge5o=
 gorm.io/gorm v0.2.28/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
+gorm.io/gorm v0.2.31 h1:zDOH3+FppJ64WKef2HY55Z8ViYY1GjO48zSLHn74+3E=
+gorm.io/gorm v0.2.31/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=

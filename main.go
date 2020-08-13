@@ -4,7 +4,6 @@ import (
 	"github.com/RainerGevers/tasker/config"
 	"github.com/RainerGevers/tasker/db"
 	"github.com/RainerGevers/tasker/lib"
-	"github.com/RainerGevers/tasker/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -24,7 +23,6 @@ func main() {
 		log.Fatal(err)
 		return
 	}
-	database.AutoMigrate(&models.Migration{})
 	db.RunMigrations(database)
 	logger := config.InitLogger()
 	env := config.Env{Database: database, Logger: logger}

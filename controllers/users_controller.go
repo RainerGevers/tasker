@@ -131,9 +131,12 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	session := models.Session{User: user, Uuid: uuid.NewV4().String(), ExpiresAt: time.Now().Add(time.Hour * 24), RefreshCode: uuid.NewV4().String()}
+	env.Database.Create(&session)
+
 	token := jwt.New(jwt.SigningMethodHS512)
 	claims := token.Claims.(jwt.MapClaims)
-	claims["uuid"] = user.Uuid
+	claims["uuid"] = session.Uuid
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -146,10 +149,9 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Sessions table implementation
 	refreshToken := jwt.New(jwt.SigningMethodHS512)
 	refreshClaims := refreshToken.Claims.(jwt.MapClaims)
-	refreshClaims["uuid"] = user.Uuid
+	refreshClaims["uuid"] = session.RefreshCode
 	refreshClaims["exp"] = time.Now().Add(time.Hour * 24 * 14)
 
 	tr, err := refreshToken.SignedString([]byte(os.Getenv("JWT_SECRET")))
