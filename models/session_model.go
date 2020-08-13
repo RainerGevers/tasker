@@ -10,6 +10,7 @@ type Session struct {
 	Uuid      string `gorm:"index:,unique;not null"`
 	UserId    uint
 	ExpiresAt time.Time
+	RefreshCode string	`gorm:"index;not null"`
 
 	User User `gorm:"foreignKey:UserId"`
 }
