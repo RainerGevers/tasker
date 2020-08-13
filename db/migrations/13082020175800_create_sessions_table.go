@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateSessionsTable13082020175800(db *gorm.DB) {
+func CreateSessionsTable13082020175800(db *gorm.DB){
 
 	if !db.Migrator().HasTable(models.Session{}) {
 		db.Migrator().CreateTable(models.Session{})

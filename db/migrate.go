@@ -28,6 +28,9 @@ func RunMigrations(db *gorm.DB) {
 		switch versionToMigrate {
 		case "13082020175800":
 			migrations.CreateSessionsTable13082020175800(db)
+		case "13082020205200":
+			migrations.AddRefreshToSessionsTable13082020205200(db)
+
 		}
 	}
 
@@ -36,6 +39,7 @@ func RunMigrations(db *gorm.DB) {
 func availableMigrations() []string {
 	return []string{
 		"13082020175800",
+		"13082020205200",
 	}
 }
 
