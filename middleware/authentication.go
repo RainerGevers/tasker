@@ -30,8 +30,8 @@ func (amw *AuthenticationMiddleware) Middleware(next http.Handler) http.Handler 
 
 		if claims, ok := token.Claims.(*authenticationClaims); ok && token.Valid {
 			user := models.User{}
-			amw.Env.Database.Model(&models.User{}).Select("users.uuid").Joins("INNER JOIN sessions ON users.id = sessions.user_id").Where("sessions.uuid = ? AND sessions.expires_at > ?", claims.Uuid, time.Now()).Scan(&user)
-			r = r.WithContext(context.WithValue(r.Context(), "current_user_uuid", user.Uuid))
+			amw.Env.Database.Model(&models.User{}).Select("users.*").Joins("INNER JOIN sessions ON users.id = sessions.user_id").Where("sessions.uuid = ? AND sessions.expires_at > ?", claims.Uuid, time.Now()).Scan(&user)
+			r = r.WithContext(context.WithValue(r.Context(), "current_user", user))
 			next.ServeHTTP(w, r)
 		} else {
 			fmt.Println(err)
