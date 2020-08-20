@@ -8,14 +8,15 @@ import (
 )
 
 func RunMigrations(db *gorm.DB) {
-	db.AutoMigrate(&models.Version{})
-	versions := []models.Version{}
+	_ = db.AutoMigrate(&models.Version{}, &models.User{})
+	var versions []models.Version
 	dbVersions := db.Select("version").Find(&versions)
 	if dbVersions.Error != nil {
 		log.Fatal(dbVersions.Error)
 	}
 
-	versionNumbers := []string{}
+	// TODO: Pluck https://v2.gorm.io/docs/advanced_query.html
+	var versionNumbers []string
 	for _, version := range versions {
 		versionNumbers = append(versionNumbers, version.Version)
 	}

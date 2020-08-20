@@ -30,7 +30,7 @@ type loginParams struct {
 	Password string `json:"password"`
 }
 
-type error struct {
+type apiError struct {
 	Reference string `json:"reference"`
 	Message   string `json:"message"`
 }
@@ -54,19 +54,19 @@ func UsersRegister(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	dbResult := env.Database.Where("email = ?", userData.User.Email).First(&user)
 
 	if dbResult.Error == nil {
-		err := error{Reference: "user_already_registered", Message: "This user email has already registered"}
+		err := apiError{Reference: "user_already_registered", Message: "This user email has already registered"}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(409)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
 	passwordHash, err := argon.GeneratePassword(userData.User.Password)
 	if err != nil {
-		err := error{Reference: "password_hash_failure", Message: "There was a problem while trying to hash the password."}
+		err := apiError{Reference: "password_hash_failure", Message: "There was a problem while trying to hash the password."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
@@ -75,19 +75,19 @@ func UsersRegister(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	dbResult = env.Database.Create(&user)
 
 	if dbResult.Error != nil {
-		err := error{Reference: "user_insert_error", Message: "There was a problem inserting the user into the database"}
+		err := apiError{Reference: "user_insert_error", Message: "There was a problem inserting the user into the database"}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
-	userSerialized := serializers.UserSerializer{Id: user.ID, Username: user.Username, Email: user.Email, Uuid: user.Uuid}
+	userSerialized := serializers.UserSerializer{Username: user.Username, Email: user.Email, Uuid: user.Uuid}
 
 	response, _ := json.Marshal(userSerialized)
 
 	w.WriteHeader(201)
-	w.Write(response)
+	_, _ = w.Write(response)
 }
 
 func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
@@ -105,29 +105,29 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	}
 
 	if loginData.Email == "" || loginData.Password == "" {
-		err := error{Reference: "email_or_password_blank", Message: "The email or password appears to be blank."}
+		err := apiError{Reference: "email_or_password_blank", Message: "The email or password appears to be blank."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
 	user := models.User{}
 	dbResult := env.Database.Where("email = ?", loginData.Email).First(&user)
 	if dbResult.Error != nil {
-		err := error{Reference: "email_or_password_incorrect", Message: "The email or password appears to be incorrect."}
+		err := apiError{Reference: "email_or_password_incorrect", Message: "The email or password appears to be incorrect."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
 	passwordMatch, err := argon.ComparePassword(loginData.Password, user.Password)
 	if err != nil || passwordMatch == false {
-		err := error{Reference: "email_or_password_incorrect", Message: "The email or password appears to be incorrect."}
+		err := apiError{Reference: "email_or_password_incorrect", Message: "The email or password appears to be incorrect."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
@@ -142,10 +142,10 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		env.Logger.Println(err)
-		err := error{Reference: "token_error", Message: "There was a error while trying to generate token."}
+		err := apiError{Reference: "token_error", Message: "There was a error while trying to generate token."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
@@ -157,10 +157,10 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	tr, err := refreshToken.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		env.Logger.Println(err)
-		err := error{Reference: "token_error", Message: "There was a error while trying to generate token."}
+		err := apiError{Reference: "token_error", Message: "There was a error while trying to generate token."}
 		response, _ := json.Marshal(err)
 		w.WriteHeader(422)
-		w.Write(response)
+		_, _ = w.Write(response)
 		return
 	}
 
@@ -169,6 +169,6 @@ func UserLogin(env *config.Env, w http.ResponseWriter, r *http.Request) {
 	response, _ := json.Marshal(loginSerialized)
 
 	w.WriteHeader(200)
-	w.Write(response)
+	_, _ = w.Write(response)
 
 }
