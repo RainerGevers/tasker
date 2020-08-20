@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"github.com/RainerGevers/tasker/config"
 	"github.com/RainerGevers/tasker/models"
 	"github.com/dgrijalva/jwt-go"
@@ -24,7 +23,7 @@ func (amw *AuthenticationMiddleware) Middleware(next http.Handler) http.Handler 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		sessionJwt := r.Header.Get("Authorization")
 
-		token, err := jwt.ParseWithClaims(sessionJwt, &authenticationClaims{}, func(token *jwt.Token) (interface{}, error) {
+		token, _ := jwt.ParseWithClaims(sessionJwt, &authenticationClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("JWT_SECRET")), nil
 		})
 
@@ -34,7 +33,6 @@ func (amw *AuthenticationMiddleware) Middleware(next http.Handler) http.Handler 
 			r = r.WithContext(context.WithValue(r.Context(), "current_user", user))
 			next.ServeHTTP(w, r)
 		} else {
-			fmt.Println(err)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		}
 
